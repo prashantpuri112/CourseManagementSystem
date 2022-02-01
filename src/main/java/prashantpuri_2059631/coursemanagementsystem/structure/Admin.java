@@ -2,11 +2,53 @@ package prashantpuri_2059631.coursemanagementsystem.structure;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Admin extends User {
     Admin(String name, String email, String password, String phone, String address, String role, String user_name) {
         super(name, email, password, phone, address, role, user_name);
+    }
+    public static ArrayList<HashMap<String, String>> getAllModules(){
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        try {
+            Statement stmt = Db_connection.get_statement();
+            String query = "SELECT * FROM module";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("moduleCode", rs.getString("moduleCode"));
+                map.put("moduleName", rs.getString("moduleName"));
+                map.put("courseCode", rs.getString("courseCode"));
+                map.put("moduleLevel", rs.getString("moduleLevel"));
+                map.put("moduleLeader", rs.getString("moduleLeader"));
+                map.put("isOptional", String.valueOf(rs.getBoolean("isOptional")));
+                list.add(map);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public static ArrayList<HashMap<String, String>> viewAllInstructor(){
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        try {
+            Statement stmt = Db_connection.get_statement();
+            String query = "SELECT * FROM instructor";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("name", rs.getString("name"));
+                map.put("email", rs.getString("email"));
+                map.put("user_name", rs.getString("user_name"));
+                map.put("address", rs.getString("address"));
+                map.put("phone", rs.getString("phone"));
+                list.add(map);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
     public static boolean addInstructor(Instructor instructor){
         try{
@@ -95,6 +137,26 @@ public class Admin extends User {
         return details;
     }
 
+    public static ArrayList<HashMap<String, String>> getAllCourse(){
+        ArrayList<HashMap<String, String>> courses = new ArrayList<>();
+        try{
+            Statement stmt = Db_connection.get_statement();
+            String query = "SELECT * FROM course";
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                HashMap<String, String> course = new HashMap<>();
+                course.put("courseCode", rs.getString("courseCode"));
+                course.put("courseName", rs.getString("courseName"));
+                course.put("courseDuration", rs.getString("courseDuration"));
+                course.put("courseStartLevel", rs.getString("courseStartLevel"));
+                course.put("isActive", rs.getString("isActive"));
+                courses.add(course);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return courses;
+    }
     // module methods
     // it has three fields moduleCode, moduleName, moduleLeader, courseCode
     // check if moduleLeader exist in instructor table and if courseCode exist in course table
@@ -131,7 +193,7 @@ public class Admin extends User {
     public static boolean addModule(Module module){
         try{
             Statement smt = Db_connection.get_statement();
-            String query = "INSERT INTO module(moduleCode, moduleName, moduleLeader, courseCode) values ('"+module.getModuleCode()+"','"+module.getModuleName()+"','"+module.getModuleLeader()+"','"+module.getCourseCode()+"')";
+            String query = "INSERT INTO module(moduleCode, moduleName, moduleLevel, moduleLeader, courseCode, isOptional) values ('"+module.getModuleCode()+"', '"+module.getModuleName()+"', '"+module.getModuleLevel()+"', '"+module.getModuleLeader()+"', '"+module.getCourseCode()+"', '"+module.getIsOptional()+"')";
             smt.executeUpdate(query);
             return true;
         } catch (Exception e){
@@ -144,7 +206,7 @@ public class Admin extends User {
         try{
 
             Statement smt = Db_connection.get_statement();
-            String query = "UPDATE module SET  moduleName = '"+module.getModuleName()+"', moduleLeader = '"+module.getModuleLeader()+"', courseCode = '"+module.getCourseCode()+"' WHERE moduleCode = '"+module.getModuleCode()+"'";
+            String query = "UPDATE module SET moduleName = '"+module.getModuleName()+"', moduleLevel = '"+module.getModuleLevel()+"', moduleLeader = '"+module.getModuleLeader()+"', courseCode = '"+module.getCourseCode()+"', isOptional = " + module.getIsOptional() + " WHERE moduleCode = '"+module.getModuleCode()+"'";
             smt.executeUpdate(query);
             return true;
         } catch (Exception e){
@@ -160,8 +222,10 @@ public class Admin extends User {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 details.put("moduleName", rs.getString("moduleName"));
+                details.put("moduleLevel", rs.getString("moduleLevel"));
                 details.put("moduleLeader", rs.getString("moduleLeader"));
                 details.put("courseCode", rs.getString("courseCode"));
+                details.put("isOptional", String.valueOf(rs.getBoolean("isOptional")));
             }
 
         } catch (Exception e) {
@@ -169,6 +233,7 @@ public class Admin extends User {
         }
         return details;
     }
+
     public static boolean checkModule(String moduleCode){
         try{
             Statement stmt = Db_connection.get_statement();

@@ -3,9 +3,8 @@ package prashantpuri_2059631.coursemanagementsystem.user_interface;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import prashantpuri_2059631.coursemanagementsystem.structure.Students;
+import prashantpuri_2059631.coursemanagementsystem.structure.Student;
 
 import java.sql.SQLException;
 
@@ -58,11 +57,22 @@ public class Register {
         Button registerButton1 = new Button("Register");
         registerPanel.add(registerButton1, 1, 8);
        registerButton1.setOnAction(e -> {
-           Students students = new Students(name.getText(), email.getText(), password.getText(), phone.getText(), address.getText(), "student", user_name.getText(), choiceBox.getValue().toString());
+           Student student = new Student(name.getText(), email.getText(), password.getText(), phone.getText(), address.getText(), user_name.getText());
            try {
-               students.register();
+               student.register();
+               student.registerCourse(choiceBox.getValue().toString());
+               Alert alert = new Alert(Alert.AlertType.INFORMATION);
+               alert.setTitle("Success");
+               alert.setHeaderText("Registration Successful");
+               alert.setContentText("You can now login");
+               alert.showAndWait();
            } catch (SQLException ex) {
                ex.printStackTrace();
+               Alert alert = new Alert(Alert.AlertType.ERROR);
+               alert.setTitle("Error");
+               alert.setHeaderText("Registration Failed");
+               alert.setContentText("Please try again");
+               alert.showAndWait();
            }
 
        });

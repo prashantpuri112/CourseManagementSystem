@@ -1,6 +1,7 @@
 package prashantpuri_2059631.coursemanagementsystem.user_interface.admin_frontend;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -8,24 +9,28 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import prashantpuri_2059631.coursemanagementsystem.Main;
 import prashantpuri_2059631.coursemanagementsystem.structure.Admin;
 import prashantpuri_2059631.coursemanagementsystem.structure.Db_connection;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AdminPanel {
-
     // dashboard
     public static void adminDashboard(){
         Stage admin_stage = new Stage();
         GridPane admin_layout = new GridPane();
-        Scene scene = new Scene(admin_layout, 400, 400);
+        admin_layout.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(admin_layout, 700, 600);
         admin_stage.setTitle("Admin Dashboard");
-        admin_layout.setPadding(new Insets(10, 10, 10, 10));
-        admin_layout.setVgap(10);
-        admin_layout.setHgap(10);
+        admin_layout.setPadding(new Insets(20));
+        scene.getStylesheets().add(Main.class.getResource("common.css").toExternalForm());
+        admin_layout.setVgap(20);
+        admin_layout.setHgap(20);
         Button view_all_student_button = new Button("View all student");
         Button view_student_report_button = new Button("View student report");
         Button view_all_course_button = new Button("View all course");
@@ -37,6 +42,8 @@ public class AdminPanel {
         Button add_module_button = new Button("Add module");
         Button edit_module_button = new Button("Edit module");
         Button delete_module_button = new Button("Delete module");
+        Button view_all_instructor_button = new Button("View all instructor");
+        Button view_all_module_button = new Button("View all module");
         admin_layout.add(view_all_student_button, 0, 0);
         admin_layout.add(view_student_report_button, 1, 0);
         admin_layout.add(view_all_course_button, 0, 1);
@@ -48,11 +55,15 @@ public class AdminPanel {
         admin_layout.add(add_module_button, 0, 4);
         admin_layout.add(edit_module_button, 1, 4);
         admin_layout.add(delete_module_button, 0, 5);
+        admin_layout.add(view_all_instructor_button, 1, 5);
+        admin_layout.add(view_all_module_button, 0, 6);
         admin_stage.setScene(scene);
         admin_stage.show();
-
+        view_all_instructor_button.setOnAction(e -> {
+            admin_stage.setScene(AdminPanel.viewAllInstructor(admin_stage, scene));
+                });
         view_all_student_button.setOnAction(e -> {
-            viewAllStudent(admin_stage);
+            viewAllStudent(admin_stage, scene);
         });
         add_instructor_button.setOnAction(e -> {
             admin_stage.setScene(LecturerActivities.addInstructor(admin_stage, scene));
@@ -72,6 +83,13 @@ public class AdminPanel {
         edit_module_button.setOnAction(e -> {
             admin_stage.setScene(ModuleActivities.editModule(admin_stage, scene));
         });
+        view_all_module_button.setOnAction(e -> {
+            admin_stage.setScene(ModuleActivities.viewAllModule(admin_stage, scene));
+                });
+        view_all_course_button.setOnAction(e -> {
+            admin_stage.setScene(CourseActivities.viewAllCourse(admin_stage, scene));
+                });
+
         delete_module_button.setOnAction(e -> {
            Stage delete_module_stage = new Stage();
            GridPane delete_module_layout = new GridPane();
@@ -109,9 +127,9 @@ public class AdminPanel {
            GridPane deletelecturerLayout = new GridPane();
            Scene delete_module_scene = new Scene(deletelecturerLayout, 400, 400);
            deleteLecturerStage.setTitle("Delete Module");
-           deletelecturerLayout.setPadding(new Insets(10, 10, 10, 10));
-           deletelecturerLayout.setVgap(10);
-           deletelecturerLayout.setHgap(10);
+           deletelecturerLayout.setPadding(new Insets(20));
+           deletelecturerLayout.setVgap(20);
+           deletelecturerLayout.setHgap(20);
            Text instructor_username = new Text("Instructor Username");
            TextField instructor_username_field = new TextField();
            Button confirmdeleteButton = new Button("Delete");
@@ -138,29 +156,29 @@ public class AdminPanel {
         });
 
     }
-    static void viewAllStudent(Stage admin_stage){
+    static void viewAllStudent(Stage admin_stage, Scene prevScene){
         GridPane admin_layout = new GridPane();
-        Scene scene = new Scene(admin_layout, 400, 400);
+        Scene scene = new Scene(admin_layout, 800, 600);
+        scene.getStylesheets().add(Main.class.getResource("common.css").toExternalForm());
         admin_stage.setTitle("View all student");
-        admin_layout.setPadding(new Insets(10, 10, 10, 10));
-        admin_layout.setVgap(10);
-        admin_layout.setHgap(10);
+        admin_layout.setPadding(new Insets(20));
+        admin_layout.setVgap(30);
+        admin_layout.setHgap(30);
         Text name = new Text("Name");
         Text email = new Text("Email");
         Text phone = new Text("Phone");
         Text address = new Text("Address");
         Text user_name = new Text("User name");
-        Text course_id = new Text("Course id");
-        Text year = new Text("Year");
-        Text semester = new Text("Semester");
+        name.getStyleClass().add("table_header");
+        email.getStyleClass().add("table_header");
+        phone.getStyleClass().add("table_header");
+        address.getStyleClass().add("table_header");
+        user_name.getStyleClass().add("table_header");
         admin_layout.add(name, 0, 0);
         admin_layout.add(email, 1, 0);
         admin_layout.add(phone, 2, 0);
         admin_layout.add(address, 3, 0);
         admin_layout.add(user_name, 4, 0);
-        admin_layout.add(course_id, 5, 0);
-        admin_layout.add(year, 6, 0);
-        admin_layout.add(semester, 7, 0);
 
         try{
             Statement statement = Db_connection.get_statement();
@@ -170,51 +188,75 @@ public class AdminPanel {
             while(res.next()){
                 String std_name = res.getString("name");
                 String std_email = res.getString("email");
-                int std_phone = res.getInt("phone");
+                String std_phone = res.getString("phone");
                 String std_address = res.getString("address");
                 String std_user_name = res.getString("user_name");
-                String std_course_id = res.getString("course_id");
-                int std_year = res.getInt("year");
-                int std_semester = res.getInt("semester");
                 admin_layout.add(new Text(std_name), 0, i);
                 admin_layout.add(new Text(std_email), 1, i);
                 admin_layout.add(new Text(String.valueOf(std_phone)), 2, i);
                 admin_layout.add(new Text(std_address), 3, i);
                 admin_layout.add(new Text(std_user_name), 4, i);
-                admin_layout.add(new Text(std_course_id), 5, i);
-                admin_layout.add(new Text(String.valueOf(std_year)), 6, i);
-                admin_layout.add(new Text(String.valueOf(std_semester)), 7, i);
                 i++;
 
             }
 
+            Button backButton = new Button("Back");
+            backButton.setOnAction(ex -> {
+                admin_stage.setScene(prevScene);
+                    });
+            admin_layout.add(backButton, 0, i, 2, 1);
             }catch (SQLException ex) {
             System.out.println("Error");
         }
-
         admin_stage.setScene(scene);
     }
+    public static Scene viewAllInstructor(Stage admin_stage, Scene prevScene){
+        GridPane grid = new GridPane();
+        Scene scene = new Scene(grid);
+        scene.getStylesheets().add(Main.class.getResource("common.css").toExternalForm());
+
+        admin_stage.setTitle("View all instructor");
+        Text title = new Text(" all instructor");
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(10);
+        grid.setHgap(10);
+        grid.add(title, 0, 0);
+
+        Text name = new Text("Name");
+        Text email = new Text("Email");
+        Text user_name = new Text("User name");
+        Text address = new Text("Address");
+        Text phone = new Text("Phone");
 
 
-    // view student report
 
+        grid.add(name, 0, 1);
+        grid.add(email, 1, 1);
+        grid.add(user_name, 2, 1);
+        grid.add(address, 3, 1);
+        grid.add(phone, 4, 1);
 
-    // add lecturer
+        ArrayList<HashMap<String, String>> instructors = Admin.viewAllInstructor();
+        for(int i = 0; i < instructors.size(); i++){
+            HashMap<String, String> instructor = instructors.get(i);
+            Text name_text = new Text(instructor.get("name"));
+            Text email_text = new Text(instructor.get("email"));
+            Text user_name_text = new Text(instructor.get("user_name"));
+            Text address_text = new Text(instructor.get("address"));
+            Text phone_text = new Text(instructor.get("phone"));
+            grid.add(name_text, 0, i+2);
+            grid.add(email_text, 1, i+2);
+            grid.add(user_name_text, 2, i+2);
+            grid.add(address_text, 3, i+2);
+            grid.add(phone_text, 4, i+2);
+        }
+        Button backButton = new Button("Back");
+        backButton.setOnAction(ex -> {
+            admin_stage.setScene(prevScene);
+        });
+        grid.add(backButton, 0, instructors.size()+2, 2, 1);
 
+        return scene;
+    }
 
-    // edit lecturer
-
-
-    // add course
-
-
-    // edit course
-
-    // add module
-
-
-    // edit module
-
-
-    // edit student ( level up )
 }

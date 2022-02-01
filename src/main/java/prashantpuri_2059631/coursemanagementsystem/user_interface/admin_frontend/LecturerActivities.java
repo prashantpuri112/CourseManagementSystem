@@ -1,11 +1,14 @@
 package prashantpuri_2059631.coursemanagementsystem.user_interface.admin_frontend;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import prashantpuri_2059631.coursemanagementsystem.structure.Admin;
@@ -18,7 +21,12 @@ import java.util.HashMap;
 
 public class LecturerActivities {
     public static Scene addInstructor(Stage stage, Scene prevScene) {
+
+        stage.setTitle("Add Instructor");
         GridPane grid_pane = new GridPane();
+        grid_pane.setHgap(10);
+        grid_pane.setVgap(10);
+        grid_pane.setPadding(new Insets(25, 25, 25, 25));
         Scene scene = new Scene(grid_pane,300,300);
         Text text = new Text("Add Lecturer");
         grid_pane.add(text,0,0);
@@ -60,19 +68,27 @@ public class LecturerActivities {
             stage.setScene(prevScene);
                 });
         add_button.setOnAction(e->{
-                    Instructor instructor = new Instructor(name_field.getText(),email_field.getText(),password_field.getText(),phone_field.getText(),address_field.getText(),username_field.getText());
-                    if(Admin.addInstructor(instructor)){
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Success");
-                        alert.setHeaderText("Success");
-                        alert.setContentText("Instructor added successfully");
-                        alert.showAndWait();
-                    } else {
+                    if(name_field.getText().isEmpty() || email_field.getText().isEmpty() || phone_field.getText().isEmpty() || username_field.getText().isEmpty() || password_field.getText().isEmpty() || address_field.getText().isEmpty()) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
                         alert.setHeaderText("Error");
-                        alert.setContentText("Instructor not added");
+                        alert.setContentText("Please fill all the fields");
                         alert.showAndWait();
+                    } else {
+                        Instructor instructor = new Instructor(name_field.getText(),email_field.getText(),password_field.getText(),phone_field.getText(),address_field.getText(),username_field.getText());
+                        if(Admin.addInstructor(instructor)){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Success");
+                            alert.setHeaderText("Success");
+                            alert.setContentText("Instructor added successfully");
+                            alert.showAndWait();
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Error");
+                            alert.setContentText("Instructor not added");
+                            alert.showAndWait();
+                        }
                     }
         });
         grid_pane.add(name,0,1);
@@ -93,10 +109,14 @@ public class LecturerActivities {
         return scene;
     }
     public static Scene editInstructor(Stage stage, Scene prevScene) {
+        stage.setTitle("Edit Instructor");
         GridPane grid_pane = new GridPane();
         Scene scene = new Scene(grid_pane,300,300);
         Text text = new Text("Edit Lecturer");
         grid_pane.add(text,0,0);
+        grid_pane.setPadding(new Insets(10,10,10,10));
+        grid_pane.setVgap(10);
+        grid_pane.setHgap(10);
 
         // searching option for lecturer
         TextField search_field = new TextField();
@@ -149,6 +169,14 @@ public class LecturerActivities {
 
                 });
         edit_button.setOnAction(e->{
+            if (name_field.getText().equals("") || email_field.getText().equals("") || phone_field.getText().equals("") || address_field.getText().equals("") || password_field.getText().equals("")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error");
+                alert.setContentText("Please fill all the fields");
+                alert.showAndWait();
+            } else {
+
             User user = new User(name_field.getText(),email_field.getText(),password_field.getText(), phone_field.getText(), address_field.getText(), searched_username.get(0), "instructor");
             if(Admin.editUser(user)){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -162,6 +190,7 @@ public class LecturerActivities {
                 alert.setHeaderText("Error");
                 alert.setContentText("Lecturer not edited");
                 alert.showAndWait();
+            }
             }
         });
         grid_pane.add(name,0,2);
@@ -180,4 +209,5 @@ public class LecturerActivities {
 
         return scene;
     }
+
 }

@@ -1,5 +1,6 @@
 package prashantpuri_2059631.coursemanagementsystem.user_interface.admin_frontend;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -14,6 +15,9 @@ import java.util.HashMap;
 public class CourseActivities {
     public static Scene addCourse(Stage stage, Scene prevScene) {
         GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10, 10, 10, 10));
+        gridPane.setVgap(8);
+        gridPane.setHgap(10);
         Text text = new Text("Add Course");
         gridPane.add(text, 0, 0);
         Scene scene = new Scene(gridPane, 300, 300);
@@ -44,6 +48,14 @@ public class CourseActivities {
 
         Button addCourseButton = new Button("Add Course");
         addCourseButton.setOnAction(e -> {
+            if (courseCodeField.getText().isEmpty() || courseNameField.getText().isEmpty() || courseDurationField.getText().isEmpty() || courseStartLevelField.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error");
+                alert.setContentText("Please fill all the fields");
+                alert.showAndWait();
+            } else{
+
             Course c = new Course(courseCodeField.getText(), courseNameField.getText(),Integer.parseInt(courseDurationField.getText()), Integer.parseInt(courseStartLevelField.getText()), courseIsActiveField.isSelected());
             if(Admin.addCourse(c)){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -55,6 +67,7 @@ public class CourseActivities {
                 alert.setTitle("Error");
                 alert.setHeaderText("Course Already Exists");
                 alert.showAndWait();
+            }
             }
         });
         Button backButton = new Button("Back");
@@ -78,6 +91,9 @@ public class CourseActivities {
     public static Scene editCourse(Stage stage, Scene prevScene) {
         GridPane gridPane = new GridPane();
         Text text = new Text("Edit Course");
+        gridPane.setPadding(new Insets(10, 10, 10, 10));
+        gridPane.setVgap(5);
+        gridPane.setHgap(5);
         gridPane.add(text, 0, 0);
         Scene scene = new Scene(gridPane, 300, 300);
 
@@ -120,6 +136,13 @@ public class CourseActivities {
             courseIsActiveField.setSelected(Boolean.parseBoolean(courseDetail.get("isActive")));
                 });
         editCourseButton.setOnAction(e -> {
+            if (courseNameField.getText().isEmpty() || courseDurationField.getText().isEmpty() || courseStartLevelField.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Please Fill All Fields");
+                alert.showAndWait();
+            } else {
+
             Course c = new Course(currentCourse.get(0), courseNameField.getText(), Integer.parseInt(courseDurationField.getText()), Integer.parseInt(courseStartLevelField.getText()), courseIsActiveField.isSelected());
 
             if (Admin.editCourse(c)) {
@@ -132,6 +155,7 @@ public class CourseActivities {
                 alert.setTitle("Error");
                 alert.setHeaderText("Course Already Exists");
                 alert.showAndWait();
+            }
             }
         });
         Button backButton = new Button("Back");
@@ -149,6 +173,44 @@ public class CourseActivities {
         gridPane.add(editCourseButton, 1, 6);
         gridPane.add(backButton, 0, 6);
 
+        return scene;
+    }
+
+    public static Scene viewAllCourse(Stage stage, Scene prevScene) {
+        stage.setTitle("View All Courses");
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10, 10, 10, 10));
+        gridPane.setVgap(8);
+        gridPane.setHgap(10);
+        Text text = new Text("View All Courses");
+        gridPane.add(text, 0, 0);
+        Scene scene = new Scene(gridPane);
+        Text courseCode = new Text("Course Code");
+        Text courseNameText = new Text("Course Name");
+        Text courseDurationText = new Text("Course Duration");
+        Text courseStartLevelText = new Text("Course Start Level");
+        Text courseIsActiveText = new Text("Course Is Active");
+        gridPane.add(courseCode, 0, 1);
+        gridPane.add(courseNameText, 1, 1);
+        gridPane.add(courseDurationText, 2, 1);
+        gridPane.add(courseStartLevelText, 3, 1);
+        gridPane.add(courseIsActiveText, 4, 1);
+        ArrayList<HashMap<String, String>> courseList = Admin.getAllCourse();
+        for (int i = 0; i < courseList.size(); i++) {
+            Text courseCodeText = new Text(courseList.get(i).get("courseCode"));
+            Text courseName = new Text(courseList.get(i).get("courseName"));
+            Text courseDuration = new Text(courseList.get(i).get("courseDuration"));
+            Text courseStartLevel = new Text(courseList.get(i).get("courseStartLevel"));
+            Text courseIsActive = new Text(courseList.get(i).get("isActive"));
+            gridPane.add(courseCodeText,0, i + 2);
+            gridPane.add(courseName, 1, i + 2);
+            gridPane.add(courseDuration, 2, i + 2);
+            gridPane.add(courseStartLevel, 3, i + 2);
+            gridPane.add(courseIsActive, 4, i + 2);
+        }
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> stage.setScene(prevScene));
+        gridPane.add(backButton, 0, courseList.size() + 3);
         return scene;
     }
 }

@@ -2,11 +2,6 @@ Button{
     -fx-background-color: #00bfff;
     -fx-text-fill: white;
     -fx-font-size: 20px;
-    -fx-min-height: 40px;
-    -fx-max-width: 300px;
-    -fx-min-width: 300px;
-}
-.table_header{
-    -fx-font-size: 20px;
     -fx-font-weight: bold;
+    -fx-border-radius: 5px;
 }

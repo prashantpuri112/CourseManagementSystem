@@ -1,5 +1,11 @@
 package prashantpuri_2059631.coursemanagementsystem.structure;
 
+import prashantpuri_2059631.coursemanagementsystem.CurrentInstructor;
+import prashantpuri_2059631.coursemanagementsystem.CurrentStudent;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class User {
     private String name;
     private String email;
@@ -8,7 +14,6 @@ public class User {
     private String address;
     private String role;
     private String user_name;
-
 
     //constructor
     public User(String name, String email, String password, String phone, String address, String user_name, String role) {
@@ -66,4 +71,27 @@ public class User {
     public void setUser_name(String user_name) {
         this.user_name = user_name;
         }
+
+    public static boolean login(String username, String password, String user_role){
+        System.out.println("User name: "+username+"\nPassword: "+password+"\nUser role: "+user_role);
+        try{
+            Statement statement = Db_connection.get_statement();
+            String query = "SELECT * FROM " + user_role.toLowerCase() + " WHERE user_name = '" + username + "' AND password = '" + password + "'";
+            System.out.println(query);
+            ResultSet resultSet = statement.executeQuery(query);
+            if(resultSet.next()){
+                if (user_role.equalsIgnoreCase("student")){
+                    CurrentStudent.currentStudent = new Student(resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"), resultSet.getString("phone"), resultSet.getString("address"), resultSet.getString("user_name"));
+                } else if (user_role.equalsIgnoreCase("instructor")){
+                    CurrentInstructor.currentInstructor = new Instructor(resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"), resultSet.getString("phone"), resultSet.getString("address"), resultSet.getString("user_name"));
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
