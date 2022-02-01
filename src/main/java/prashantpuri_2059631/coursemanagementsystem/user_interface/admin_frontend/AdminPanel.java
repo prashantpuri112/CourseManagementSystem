@@ -65,6 +65,9 @@ public class AdminPanel {
         view_all_student_button.setOnAction(e -> {
             viewAllStudent(admin_stage, scene);
         });
+        view_student_report_button.setOnAction(e -> {
+            admin_stage.setScene(AdminPanel.viewStudentReport(admin_stage, scene));
+                });
         add_instructor_button.setOnAction(e -> {
             admin_stage.setScene(LecturerActivities.addInstructor(admin_stage, scene));
         });
@@ -256,6 +259,46 @@ public class AdminPanel {
         });
         grid.add(backButton, 0, instructors.size()+2, 2, 1);
 
+        return scene;
+    }
+
+    public static Scene viewStudentReport(Stage admin_stage, Scene prevScene){
+        GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 600, 600);
+        TextField searchStudent = new TextField();
+        Button search = new Button("Search");
+        searchStudent.setPromptText("Enter student username");
+        Text moduleText = new Text("Module Code");
+        Text marks = new Text("Marks");
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(10);
+        grid.setHgap(10);
+        grid.add(searchStudent, 0, 0);
+        grid.add(search, 1, 0);
+        grid.add(moduleText, 0, 1);
+        grid.add(marks, 1, 1);
+        search.setOnAction(ex -> {
+            if (!searchStudent.getText().equals("")) {
+                Text title = new Text("Student Report for " + searchStudent.getText());
+                ArrayList<HashMap<String, String>> moduleMark = Admin.viewStudentReport(searchStudent.getText());
+                if (moduleMark != null) {
+                    grid.getChildren().clear();
+                    grid.add(searchStudent, 0, 0);
+                    grid.add(search, 1, 0);
+                    grid.add(moduleText, 0, 2);
+                    grid.add(marks, 1, 2);
+                    grid.add(title, 0, 1);
+                    int i = 3;
+                    for (HashMap<String, String> module : moduleMark) {
+                        Text module_text = new Text(module.get("moduleCode"));
+                        Text mark_text = new Text(module.get("mark"));
+                        grid.add(module_text, 0, i);
+                        grid.add(mark_text, 1, i);
+                        i++;
+                    }
+                }
+            }
+        });
         return scene;
     }
 

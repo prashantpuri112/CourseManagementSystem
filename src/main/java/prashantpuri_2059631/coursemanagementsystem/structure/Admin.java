@@ -271,4 +271,22 @@ public class Admin extends User {
         }
         return false;
     }
+
+    public static ArrayList<HashMap<String, String>> viewStudentReport(String username){
+        ArrayList<HashMap<String, String>> details = new ArrayList<>();
+        try {
+            Statement statement = Db_connection.get_statement();
+            String query = "SELECT * FROM modulemark WHERE username = '" + username + "'";
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+                HashMap<String, String> module = getModuleDetail(rs.getString("moduleCode"));
+                module.put("moduleCode", rs.getString("moduleCode"));
+                module.put("mark", rs.getString("mark"));
+                details.add(module);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return details;
+    }
 }
