@@ -193,7 +193,7 @@ public class Admin extends User {
     public static boolean addModule(Module module){
         try{
             Statement smt = Db_connection.get_statement();
-            String query = "INSERT INTO module(moduleCode, moduleName, moduleLevel, moduleLeader, courseCode, isOptional) values ('"+module.getModuleCode()+"', '"+module.getModuleName()+"', '"+module.getModuleLevel()+"', '"+module.getModuleLeader()+"', '"+module.getCourseCode()+"', '"+module.getIsOptional()+"')";
+            String query = "INSERT INTO module(moduleCode, moduleName, moduleLevel, moduleLeader, courseCode, isOptional) values ('"+module.getModuleCode()+"', '"+module.getModuleName()+"', '"+module.getModuleLevel()+"', '"+module.getModuleLeader()+"', '"+module.getCourseCode()+"', "+module.getIsOptional()+")";
             smt.executeUpdate(query);
             return true;
         } catch (Exception e){

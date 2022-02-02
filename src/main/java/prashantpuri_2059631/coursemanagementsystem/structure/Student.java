@@ -29,7 +29,7 @@ public class Student extends User{
             statement.executeUpdate(query);
 
     }
-    public ArrayList<String> getAllCourseCodes(){
+    public static ArrayList<String> getAllCourseCodes(){
         ArrayList<String> course_codes = new ArrayList<>();
         try{
             Statement statement = Db_connection.get_statement();

@@ -24,7 +24,7 @@ public class ModuleActivities {
         gridPane.setVgap(8);
         gridPane.setHgap(10);
         gridPane.add(text, 0, 0);
-        Scene scene = new Scene(gridPane, 300, 300);
+        Scene scene = new Scene(gridPane, 600, 300);
         scene.getStylesheets().add(Main.class.getResource("common.css").toExternalForm());
         // fields for input
         Label moduleCodeLabel = new Label("Module Code");

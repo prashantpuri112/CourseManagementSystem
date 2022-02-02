@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import prashantpuri_2059631.coursemanagementsystem.Main;
 import prashantpuri_2059631.coursemanagementsystem.structure.Admin;
 import prashantpuri_2059631.coursemanagementsystem.structure.Course;
 
@@ -18,6 +19,7 @@ public class CourseActivities {
         gridPane.setPadding(new Insets(10, 10, 10, 10));
         gridPane.setVgap(8);
         gridPane.setHgap(10);
+        stage.setTitle("Add Course");
         Text text = new Text("Add Course");
         gridPane.add(text, 0, 0);
         Scene scene = new Scene(gridPane, 300, 300);
@@ -91,6 +93,7 @@ public class CourseActivities {
     public static Scene editCourse(Stage stage, Scene prevScene) {
         GridPane gridPane = new GridPane();
         Text text = new Text("Edit Course");
+        stage.setTitle("Edit Course");
         gridPane.setPadding(new Insets(10, 10, 10, 10));
         gridPane.setVgap(5);
         gridPane.setHgap(5);
@@ -180,11 +183,13 @@ public class CourseActivities {
         stage.setTitle("View All Courses");
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(10, 10, 10, 10));
+
         gridPane.setVgap(8);
         gridPane.setHgap(10);
         Text text = new Text("View All Courses");
         gridPane.add(text, 0, 0);
         Scene scene = new Scene(gridPane);
+        scene.getStylesheets().add(Main.class.getResource("login.css").toExternalForm());
         Text courseCode = new Text("Course Code");
         Text courseNameText = new Text("Course Name");
         Text courseDurationText = new Text("Course Duration");

@@ -29,6 +29,7 @@ public class Main extends Application {
         alert.getButtonTypes().setAll(yes, no);
         alert.showAndWait().ifPresent(type -> {
             if (type == yes) {
+                stage.close();
                 AdminPanel.adminDashboard();
             } else if (type == no) {
                 stage.setScene(Login.loginScene(stage));

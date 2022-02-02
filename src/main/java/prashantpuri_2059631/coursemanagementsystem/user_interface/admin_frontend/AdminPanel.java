@@ -6,7 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import prashantpuri_2059631.coursemanagementsystem.Main;
@@ -23,9 +27,20 @@ public class AdminPanel {
     // dashboard
     public static void adminDashboard(){
         Stage admin_stage = new Stage();
+        BorderPane borderLayout = new BorderPane();
         GridPane admin_layout = new GridPane();
+        HBox hbox = new HBox();
+        borderLayout.setCenter(admin_layout);
+        Image herald_logo = new Image(Main.class.getResource("img.png").toExternalForm());
+        ImageView logo = new ImageView(herald_logo);
+        logo.setFitWidth(200);
+        logo.setPreserveRatio(true);
+        hbox.getChildren().add(logo);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setPadding(new Insets(10, 10, 10, 10));
+        borderLayout.setTop(hbox);
         admin_layout.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(admin_layout, 700, 600);
+        Scene scene = new Scene(borderLayout, 700, 600);
         admin_stage.setTitle("Admin Dashboard");
         admin_layout.setPadding(new Insets(20));
         scene.getStylesheets().add(Main.class.getResource("common.css").toExternalForm());
@@ -38,7 +53,7 @@ public class AdminPanel {
         Button add_course_button = new Button("Add course");
         Button edit_instructor_button = new Button("Edit instructor");
         Button edit_course_button = new Button("Edit course");
-        Button delete_lecturer_button = new Button("Delete lecturer");
+        Button delete_instructor_button = new Button("Delete instructor");
         Button add_module_button = new Button("Add module");
         Button edit_module_button = new Button("Edit module");
         Button delete_module_button = new Button("Delete module");
@@ -51,7 +66,7 @@ public class AdminPanel {
         admin_layout.add(add_course_button, 0, 2);
         admin_layout.add(edit_instructor_button, 1, 2);
         admin_layout.add(edit_course_button, 0, 3);
-        admin_layout.add(delete_lecturer_button, 1, 3);
+        admin_layout.add(delete_instructor_button, 1, 3);
         admin_layout.add(add_module_button, 0, 4);
         admin_layout.add(edit_module_button, 1, 4);
         admin_layout.add(delete_module_button, 0, 5);
@@ -125,14 +140,16 @@ public class AdminPanel {
            delete_module_stage.setScene(delete_module_scene);
            delete_module_stage.show();
         });
-        delete_lecturer_button.setOnAction(e -> {
+        delete_instructor_button.setOnAction(e -> {
            Stage deleteLecturerStage = new Stage();
-           GridPane deletelecturerLayout = new GridPane();
-           Scene delete_module_scene = new Scene(deletelecturerLayout, 400, 400);
+           GridPane deleteInstructor = new GridPane();
+           admin_stage.setTitle("Delete Lecturer");
+           Scene delete_module_scene = new Scene(deleteInstructor, 400, 400);
            deleteLecturerStage.setTitle("Delete Module");
-           deletelecturerLayout.setPadding(new Insets(20));
-           deletelecturerLayout.setVgap(20);
-           deletelecturerLayout.setHgap(20);
+           deleteInstructor.setPadding(new Insets(20));
+           deleteInstructor.setVgap(20);
+           deleteInstructor.setHgap(20);
+
            Text instructor_username = new Text("Instructor Username");
            TextField instructor_username_field = new TextField();
            Button confirmdeleteButton = new Button("Delete");
@@ -151,9 +168,9 @@ public class AdminPanel {
                    alert.showAndWait();
                }
            });
-           deletelecturerLayout.add(instructor_username, 0, 0);
-           deletelecturerLayout.add(instructor_username_field, 1, 0);
-           deletelecturerLayout.add(confirmdeleteButton, 1, 1);
+           deleteInstructor.add(instructor_username, 0, 0);
+           deleteInstructor.add(instructor_username_field, 1, 0);
+           deleteInstructor.add(confirmdeleteButton, 1, 1);
            deleteLecturerStage.setScene(delete_module_scene);
            deleteLecturerStage.show();
         });
@@ -266,6 +283,7 @@ public class AdminPanel {
         GridPane grid = new GridPane();
         Scene scene = new Scene(grid, 600, 600);
         TextField searchStudent = new TextField();
+        admin_stage.setTitle("View student report");
         Button search = new Button("Search");
         searchStudent.setPromptText("Enter student username");
         Text moduleText = new Text("Module Code");
@@ -277,6 +295,7 @@ public class AdminPanel {
         grid.add(search, 1, 0);
         grid.add(moduleText, 0, 1);
         grid.add(marks, 1, 1);
+
         search.setOnAction(ex -> {
             if (!searchStudent.getText().equals("")) {
                 Text title = new Text("Student Report for " + searchStudent.getText());
@@ -299,6 +318,11 @@ public class AdminPanel {
                 }
             }
         });
+                    Button backButton = new Button("Back");
+                    backButton.setOnAction(ex1 -> {
+                        admin_stage.setScene(prevScene);
+                    });
+                    grid.add(backButton, 3, 3);
         return scene;
     }
 

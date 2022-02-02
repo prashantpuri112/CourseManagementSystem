@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import prashantpuri_2059631.coursemanagementsystem.Main;
@@ -20,12 +22,17 @@ public class Login{
         loginPanel.setPadding(new Insets(20));
         loginPanel.setHgap(10);
         loginPanel.setVgap(10);
+        Image herald_logo = new Image(Main.class.getResource("img.png").toExternalForm());
+        ImageView logo = new ImageView(herald_logo);
+        logo.setFitWidth(200);
+        logo.setPreserveRatio(true);
+        loginPanel.add(logo, 0, 0, 2, 1);
         login_scene.getStylesheets().add(Main.class.getResource("login.css").toExternalForm());
         String[] roles = {"Student", "Instructor"};
         Label roleLabel = new Label("Role");
         ChoiceBox<String> role = new ChoiceBox<>(FXCollections.observableArrayList(roles));
         TextField user_id = new TextField();
-        TextField passwd = new TextField();
+        PasswordField passwd = new PasswordField();
         role.setValue("Student");
         Label user_id_label = new Label("User ID");
         Label passwd_label = new Label("Password");
@@ -59,14 +66,15 @@ public class Login{
            primaryStage.setScene(Register.registerScene(primaryStage));
         });
 
-        loginPanel.add(roleLabel, 0, 0);
-        loginPanel.add(role, 1, 0);
-        loginPanel.add(user_id_label, 0, 1);
-        loginPanel.add(user_id, 1, 1);
-        loginPanel.add(passwd_label, 0, 2);
-        loginPanel.add(passwd, 1, 2);
-        loginPanel.add(login_button, 0, 3);
-        loginPanel.add(register_button, 1, 3);
+        loginPanel.add(roleLabel, 0, 1);
+        loginPanel.add(role, 1, 1);
+        loginPanel.add(user_id_label, 0, 2);
+        loginPanel.add(user_id, 1, 2);
+        loginPanel.add(passwd_label, 0, 3);
+        loginPanel.add(passwd, 1, 3);
+        loginPanel.add(login_button, 0, 4);
+        loginPanel.add(register_button, 1, 4);
+
 
         loginPanel.setHgap(10);
         loginPanel.setVgap(10);
