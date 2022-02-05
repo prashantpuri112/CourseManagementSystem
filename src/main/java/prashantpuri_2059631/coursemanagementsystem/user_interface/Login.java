@@ -7,6 +7,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import prashantpuri_2059631.coursemanagementsystem.Main;
 import prashantpuri_2059631.coursemanagementsystem.structure.User;
@@ -17,8 +20,14 @@ import prashantpuri_2059631.coursemanagementsystem.user_interface.student_fronte
 public class Login{
     public static Scene loginScene(Stage primaryStage){
         primaryStage.setTitle("Login");
+        VBox loginLayout = new VBox();
+        HBox loginHeader = new HBox();
+        Text welcomeText = new Text("Welcome to Course Management System");
+        loginHeader.getChildren().add(welcomeText);
+        loginLayout.getChildren().add(loginHeader);
         GridPane loginPanel = new GridPane();
-        Scene login_scene = new Scene(loginPanel, 300, 300);
+        loginLayout.getChildren().add(loginPanel);
+        Scene login_scene = new Scene(loginLayout, 300, 300);
         loginPanel.setPadding(new Insets(20));
         loginPanel.setHgap(10);
         loginPanel.setVgap(10);
@@ -65,7 +74,7 @@ public class Login{
         register_button.setOnAction(e -> {
            primaryStage.setScene(Register.registerScene(primaryStage));
         });
-
+        Button admin_button = new Button("Go to Admin");
         loginPanel.add(roleLabel, 0, 1);
         loginPanel.add(role, 1, 1);
         loginPanel.add(user_id_label, 0, 2);
@@ -74,8 +83,7 @@ public class Login{
         loginPanel.add(passwd, 1, 3);
         loginPanel.add(login_button, 0, 4);
         loginPanel.add(register_button, 1, 4);
-
-
+        loginPanel.add(admin_button, 0, 5);
         loginPanel.setHgap(10);
         loginPanel.setVgap(10);
         return login_scene;
