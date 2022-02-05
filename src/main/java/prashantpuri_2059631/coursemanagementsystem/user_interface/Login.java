@@ -17,17 +17,21 @@ import prashantpuri_2059631.coursemanagementsystem.user_interface.admin_frontend
 import prashantpuri_2059631.coursemanagementsystem.user_interface.instructor_frontend.InstructorPanel;
 import prashantpuri_2059631.coursemanagementsystem.user_interface.student_frontend.StudentPanel;
 
+import java.util.Optional;
+
 public class Login{
     public static Scene loginScene(Stage primaryStage){
         primaryStage.setTitle("Login");
         VBox loginLayout = new VBox();
         HBox loginHeader = new HBox();
+        loginHeader.setPadding(new Insets(10,10,10,10));
         Text welcomeText = new Text("Welcome to Course Management System");
+        welcomeText.setStyle("-fx-font-size: 20px; -fx-padding: 5px; -fx-font-weight: bold;");
         loginHeader.getChildren().add(welcomeText);
         loginLayout.getChildren().add(loginHeader);
         GridPane loginPanel = new GridPane();
         loginLayout.getChildren().add(loginPanel);
-        Scene login_scene = new Scene(loginLayout, 300, 300);
+        Scene login_scene = new Scene(loginLayout, 400, 400);
         loginPanel.setPadding(new Insets(20));
         loginPanel.setHgap(10);
         loginPanel.setVgap(10);
@@ -74,7 +78,20 @@ public class Login{
         register_button.setOnAction(e -> {
            primaryStage.setScene(Register.registerScene(primaryStage));
         });
+
         Button admin_button = new Button("Go to Admin");
+        admin_button.setOnAction(e -> {
+            // confirmation alert for admin
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Confirm Login");
+            alert.setContentText("Are you sure you want to login as an admin?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                AdminPanel.adminDashboard();
+                primaryStage.close();
+            }
+                });
         loginPanel.add(roleLabel, 0, 1);
         loginPanel.add(role, 1, 1);
         loginPanel.add(user_id_label, 0, 2);

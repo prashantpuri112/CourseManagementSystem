@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import prashantpuri_2059631.coursemanagementsystem.Main;
 import prashantpuri_2059631.coursemanagementsystem.structure.Admin;
 import prashantpuri_2059631.coursemanagementsystem.structure.Db_connection;
+import prashantpuri_2059631.coursemanagementsystem.user_interface.Login;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,6 +60,7 @@ public class AdminPanel {
         Button delete_module_button = new Button("Delete module");
         Button view_all_instructor_button = new Button("View all instructor");
         Button view_all_module_button = new Button("View all module");
+        Button back_to_login_button = new Button("Back to login");
         admin_layout.add(view_all_student_button, 0, 0);
         admin_layout.add(view_student_report_button, 1, 0);
         admin_layout.add(view_all_course_button, 0, 1);
@@ -72,6 +74,13 @@ public class AdminPanel {
         admin_layout.add(delete_module_button, 0, 5);
         admin_layout.add(view_all_instructor_button, 1, 5);
         admin_layout.add(view_all_module_button, 0, 6);
+        admin_layout.add(back_to_login_button, 1, 6);
+        back_to_login_button.setOnAction(e -> {
+            admin_stage.close();
+            Stage primaryStage = new Stage();
+            primaryStage.show();
+            primaryStage.setScene(Login.loginScene(primaryStage));
+                });
         admin_stage.setScene(scene);
         admin_stage.show();
         view_all_instructor_button.setOnAction(e -> {
@@ -107,7 +116,7 @@ public class AdminPanel {
         view_all_course_button.setOnAction(e -> {
             admin_stage.setScene(CourseActivities.viewAllCourse(admin_stage, scene));
                 });
-
+        back_to_login_button.setStyle("-fx-background-color: #2f2f2f; -fx-text-fill: #fff");
         delete_module_button.setOnAction(e -> {
            Stage delete_module_stage = new Stage();
            GridPane delete_module_layout = new GridPane();
