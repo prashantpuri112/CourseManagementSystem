@@ -19,6 +19,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
 //        StudentPanel.studentView();
 //        AdminPanel.adminDashboard();
+
         // ask user if he is admin or not
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Course Management System");

@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
+// Student is child class of User
 public class Student extends User{
+    // calling super method (parent constructor)
     public Student(String name, String email, String password, String phone, String address, String user_name) {
         super(name, email, password, phone, address, user_name, "student");
     }
@@ -29,6 +30,7 @@ public class Student extends User{
             statement.executeUpdate(query);
 
     }
+    // {"BIT", "BIBM"}
     public static ArrayList<String> getAllCourseCodes(){
         ArrayList<String> course_codes = new ArrayList<>();
         try{
@@ -44,6 +46,7 @@ public class Student extends User{
         System.out.println(course_codes);
         return course_codes;
     }
+    // {"key": "value"}
     public HashMap<String, String> getCourseDetail(String courseCode){
         HashMap<String, String> course_details = new HashMap<>();
         try{
@@ -51,6 +54,7 @@ public class Student extends User{
             String query = "SELECT * FROM course WHERE courseCode = '"+courseCode+"'";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()){
+                // course_detail.put(key, value)
                 course_details.put("courseCode", resultSet.getString("courseCode"));
                 course_details.put("courseName", resultSet.getString("courseName"));
                 course_details.put("courseDuration", resultSet.getString("courseDuration"));
@@ -60,6 +64,7 @@ public class Student extends User{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        // {"courseCode": "BIT", "courseName": "BSc.Hons com",..}
         return course_details;
     }
 
@@ -77,6 +82,7 @@ public class Student extends User{
         }
         return enrolled_modules;
     }
+    // {{"fadsf", "fds"}, {}}
     public ArrayList<ArrayList<String>> getReport(){
         Statement statement = Db_connection.get_statement();
         ArrayList<ArrayList<String>> modulesMark = new ArrayList<>();
@@ -94,6 +100,8 @@ public class Student extends User{
         }
         return modulesMark;
     }
+    // returns student enrollment details in the form of
+    // {"courseCode": "BIT", "level": "5"}
     public HashMap<String, String> getEnrollmentDetail(){
         Statement statement = Db_connection.get_statement();
         HashMap<String, String> enrollment_details = new HashMap<>();
@@ -109,6 +117,7 @@ public class Student extends User{
         }
         return enrollment_details;
     }
+    // return all available models in the form of {{"moduleLevel"
     public ArrayList<HashMap<String, String>> getAvailableModules(){
         ArrayList<String> enrolledModules = this.getEnrolledModules();
         ArrayList<HashMap<String, String>> available_modules = new ArrayList<>();
@@ -123,7 +132,7 @@ public class Student extends User{
         }
         return available_modules;
     }
-
+    // enrolls student in a module
     public boolean enrollModules(ArrayList<String> modules){
         Statement statement = Db_connection.get_statement();
         try{

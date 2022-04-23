@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import prashantpuri_2059631.coursemanagementsystem.Main;
 import prashantpuri_2059631.coursemanagementsystem.CurrentStudent;
+import prashantpuri_2059631.coursemanagementsystem.user_interface.Login;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +36,19 @@ public class StudentPanel {
         studentGrid.add(enrollModules, 0, 1);
         studentGrid.add(viewReport, 1, 1);
         studentGrid.add(viewLecturer, 0, 2);
+
+
+        Button back_to_login_button = new Button("Back to login");
+        studentGrid.add(back_to_login_button, 1, 6);
+        back_to_login_button.setOnAction(e -> {
+            studentStage.close();
+            Stage primaryStage = new Stage();
+            primaryStage.show();
+            primaryStage.setScene(Login.loginScene(primaryStage));
+        });
+
+
+
 
         enrollModules.setOnAction(e -> {
             studentStage.setScene(enrollModulesView(studentStage, studentScene));
@@ -180,4 +194,5 @@ public class StudentPanel {
         });
         return viewLecturersScene;
     }
+
 }

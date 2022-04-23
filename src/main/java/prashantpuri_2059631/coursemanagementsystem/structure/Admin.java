@@ -9,14 +9,16 @@ public class Admin extends User {
     Admin(String name, String email, String password, String phone, String address, String role, String user_name) {
         super(name, email, password, phone, address, role, user_name);
     }
-    public static ArrayList<HashMap<String, String>> getAllModules(){
+    // returns hashmap of all modules
+    // {{"moduleCode": "OOP", "moduleName": "Object.."}, {...}}
+    public static ArrayList<HashMap<String, String>> getAllModules(){    //array list of hashmap
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
         try {
             Statement stmt = Db_connection.get_statement();
             String query = "SELECT * FROM module";
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                HashMap<String, String> map = new HashMap<>();
+                HashMap<String, String> map = new HashMap<>();          // for each and evey module hashmap is created
                 map.put("moduleCode", rs.getString("moduleCode"));
                 map.put("moduleName", rs.getString("moduleName"));
                 map.put("courseCode", rs.getString("courseCode"));
@@ -80,7 +82,7 @@ public class Admin extends User {
             String query = "SELECT * FROM instructor WHERE user_name = '"+user_name+"'";
             ResultSet rs = stmt.executeQuery(query);
             while(rs.next()){
-                details.put("name", rs.getString("name"));
+                details.put("name", rs.getString("name"));          //taking value from sql
                 details.put("email", rs.getString("email"));
                 details.put("password", rs.getString("password"));
                 details.put("phone", rs.getString("phone"));

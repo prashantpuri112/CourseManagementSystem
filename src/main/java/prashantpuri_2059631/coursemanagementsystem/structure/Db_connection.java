@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class Db_connection {
+    // gives Statement
     public static Statement get_statement() {
         try {
             String db_user = "root";

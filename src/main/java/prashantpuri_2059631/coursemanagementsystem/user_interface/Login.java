@@ -20,11 +20,15 @@ import prashantpuri_2059631.coursemanagementsystem.user_interface.student_fronte
 import java.util.Optional;
 
 public class Login{
+    // login page
     public static Scene loginScene(Stage primaryStage){
         primaryStage.setTitle("Login");
+        // sets all elements vertically
         VBox loginLayout = new VBox();
+        // sets all elements horizontally
         HBox loginHeader = new HBox();
-        loginHeader.setPadding(new Insets(10,10,10,10));
+        // inset means giving gap inside element
+        loginHeader.setPadding(new Insets(10));
         Text welcomeText = new Text("Welcome to Course Management System");
         welcomeText.setStyle("-fx-font-size: 20px; -fx-padding: 5px; -fx-font-weight: bold;");
         loginHeader.getChildren().add(welcomeText);
@@ -75,6 +79,8 @@ public class Login{
                 alert.showAndWait();
             }
                 });
+        // on button press
+        // this is an even listner
         register_button.setOnAction(e -> {
            primaryStage.setScene(Register.registerScene(primaryStage));
         });
@@ -92,6 +98,7 @@ public class Login{
                 primaryStage.close();
             }
                 });
+        // adding element in grid layout based on column and row
         loginPanel.add(roleLabel, 0, 1);
         loginPanel.add(role, 1, 1);
         loginPanel.add(user_id_label, 0, 2);
